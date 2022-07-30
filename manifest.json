@@ -15,7 +15,6 @@
       "matches": ["https://*.zkillboard.com/*"],
       "css": ["style.css"],
       "js": [
-        "lib/pakoInflate.min.js",
         "whClass.js",
         "killOverley.js"
       ]
