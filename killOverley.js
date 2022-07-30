@@ -98,9 +98,10 @@ class FitTooltip {
     // tooltop DOM element
     this.tooltip = document.createElement('div');
 
-    this.tooltip.className = 'kill-fit';
     parentEl.style.position = 'relative';
     parentEl.style.display = 'inline-block';
+    parentEl.title = '';
+    this.tooltip.className = 'kill-fit';
     this.tooltip.style.visibility = visible ? 'visible' : 'hidden';
     this.tooltip.innerHTML = '<span class="loader"></span>';
 
