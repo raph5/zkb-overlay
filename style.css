@@ -1,0 +1,51 @@
+@keyframes fade-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.kill-fit {
+  background-color: #1d1d1d;
+  border: 1px solid #565242;
+  border-radius: 4px;
+  z-index: 10000;
+  padding: 10px;
+  min-width: 52px;
+  min-height: 52px;
+  position: absolute;
+  top: 0px;
+  left: calc(100% - 1px);
+  display: flex;
+  transform-origin: 0 0;
+  animation: fade-in 120ms ease-out;
+}
+
+.kill-fit__group img {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+
+
+
+
+/* https://loading.io/css/ */
+.loader {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 2px solid #FFF;
+  border-right: 2px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
