@@ -11,7 +11,10 @@ class NameHandler {
         document.getElementById(callbackID).title = this.cache[type];
       }
       else {
-        const name = (await chrome.storage.local.get(type))[type];
+        let name = (await chrome.storage.local.get(type))[type];
+        if(!name && type.split(':')[0] == 'corpTypes') {
+          name = (await (await fetch('https://esi.evetech.net/latest/universe/names', { method: 'POST', body: `[${type.split(':')[1]}]` })).json())[0].name
+        }
         this.cache[type] = name;
         document.getElementById(callbackID).title = name;
       }
