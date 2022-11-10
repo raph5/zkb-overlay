@@ -14,7 +14,7 @@ A zKillboard Overlay designed for Wormhole intel
 ## Features
 
 ### kill fitting tooltip
-![alt text](https://imgur.com/a/GgzTPoR.png)
+![alt text](https://i.imgur.com/gxVr7zR.png)
 
 ### wormhole class display
 ![alt text](https://i.imgur.com/2AzfQWU.png)
