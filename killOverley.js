@@ -1,8 +1,31 @@
 
+class NameHandler {
+  
+  static cache = {};
+  static nameCallbackID = 245765;
+  static setupCallbackID(type) {
+    const callbackID = this.nameCallbackID++
+
+    (async () => {
+      if(this.cache[type]) {
+        document.getElementById(callbackID).title = this.cache[type];
+      }
+      else {
+        const name = (await chrome.storage.local.get(type))[type];
+        this.cache[type] = name;
+        document.getElementById(callbackID).title = name;
+      }
+    })()
+
+    return callbackID
+  }
+
+}
+
 let lastTooltip = null;
 class FitTooltip {
 
-  showFit(fit) {
+  showData(fit, attackers) {
     let _emptyFit = true
     for(const i in fit) {
       if(fit[i].length > 0) {
@@ -11,53 +34,67 @@ class FitTooltip {
       }
     }
     if(_emptyFit) {
-      this.tooltip.innerHTML = ''
+      this.tooltipFit.innerHTML = ''
       return
     }
 
-    this.tooltip.innerHTML = `
+    this.tooltipFit.innerHTML = `
       <div class="kill-fit__group">
       ${fit.highSlot.map(i => (`
-        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" title="${i.name}" />
+        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" id="${NameHandler.setupCallbackID('types:'+i.type)}" />
       `)).join('')}
       </div>
       <div class="kill-fit__group">
       ${fit.medSlot.map(i => (`
-        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" title="${i.name}" />
+        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" id="${NameHandler.setupCallbackID('types:'+i.type)}" />
       `)).join('')}
       </div>
       <div class="kill-fit__group">
       ${fit.lowSlot.map(i => (`
-        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" title="${i.name}" />
+        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" id="${NameHandler.setupCallbackID('types:'+i.type)}" />
       `)).join('')}
       </div>
       <div class="kill-fit__group">
       ${fit.rigs.map(i => (`
-        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" title="${i.name}" />
+        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" id="${NameHandler.setupCallbackID('types:'+i.type)}" />
       `)).join('')}
       </div>
       <div class="kill-fit__group">
       ${fit.subsystem.map(i => (`
-        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" title="${i.name}" />
+        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" id="${NameHandler.setupCallbackID('types:'+i.type)}" />
       `)).join('')}
       </div>
       <div class="kill-fit__group">
       ${fit.drones.map(i => (`
-        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" title="${i.name}" />
+        <img src="https://images.evetech.net/types/${i.type}/icon?size=32" id="${NameHandler.setupCallbackID('types:'+i.type)}" />
       `)).join('')}
       </div>
     `;
+
+    this.tooltipAtt.innerHTML = `
+      ${attackers.slice(0, 10).map(att => (`
+        <div>
+          <img id="${NameHandler.setupCallbackID('types:'+att.ship)}" src="${att.ship !== 0 ? `https://images.evetech.net/types/${att.ship}/render?size=32` : `https://zkillboard.com/img/eve-question.png` }">
+          <img id="${NameHandler.setupCallbackID('corpTypes:'+att.corp)}" src="https://images.evetech.net/corporations/${att.corp}/logo?size=32">
+          <img id="${NameHandler.setupCallbackID('allyTypes:'+att.alliance)}" src="https://images.evetech.net/alliances/${att.alliance}/logo?size=32">
+        </div>
+      `)).join('')}
+
+      ${attackers.length > 10 ? `
+        <span class="ellipsis">...</span>
+      ` : ''}
+    `;
   }
 
-  async fetchKillFit(killID) {
-    const fit = { highSlot: [], medSlot: [], lowSlot: [], rigs: [], subsystem: [], drones: [],   }
+  async fetchKillData(killID) {
+    const fit = { highSlot: [], medSlot: [], lowSlot: [], rigs: [], subsystem: [], drones: [] }
+    const attackers = []
     
     const rep = await fetch(`https://kb.evetools.org/api/v1/killmails/${killID}`, { headers: { "User-Agent": "raph_5#0989 ^^" } });
     const data = await rep.json();
     
     async function pushItem(position, [ slot, type ], fit) {
-      const name = (await chrome.storage.local.get('types:'+type))['types:'+type];
-      fit[position].push({ name, type, slot })
+      fit[position].push({ type, slot })
     }
     if(Array.isArray(data.vict.itms)) {
       for(const item of data.vict.itms) {
@@ -68,6 +105,16 @@ class FitTooltip {
         if(item[0] >= 125 && item[0] < 128) { await pushItem('subsystem', item, fit) } else
         if(item[0] == 87 || item[0] == 158) { await pushItem('drones', item, fit) }
       }
+    }
+
+    for(const att of data.atts) {
+      attackers.push({
+        character: att.character,
+        corp: att.corp,
+        alliance: att.ally,
+        ship: att.ship,
+        weapon: att.weapon,
+      })
     }
   
     for(const position in fit) {
@@ -80,7 +127,7 @@ class FitTooltip {
       fit[position] = Object.values(_types).sort((v1, v2) => (v1.type - v2.type))
     }
     
-    return fit
+    return { fit, attackers }
   }
 
   constructor(parentEl, killID, visible=false) {
@@ -88,7 +135,7 @@ class FitTooltip {
     this.parentEl = parentEl;
 
     // fetching
-    let fitPromise = this.fetchKillFit(killID)
+    let fitPromise = this.fetchKillData(killID)
     
     // remove other existing tooltips
     if(lastTooltip) {
@@ -97,15 +144,22 @@ class FitTooltip {
     
     // tooltop DOM element
     this.tooltip = document.createElement('div');
+    this.tooltipFit = document.createElement('div');
+    this.tooltipAtt = document.createElement('div');
 
     parentEl.style.position = 'relative';
     parentEl.style.display = 'inline-block';
     parentEl.title = '';
-    this.tooltip.className = 'kill-fit';
+    this.tooltipFit.className = 'box kill-fit';
+    this.tooltipFit.innerHTML = '<span class="loader"></span>';
+    this.tooltipAtt.className = 'box kill-att';
+    this.tooltipAtt.innerHTML = '<span class="loader"></span>';
+    this.tooltip.className = 'overlay-tooltip';
     this.tooltip.style.visibility = visible ? 'visible' : 'hidden';
-    this.tooltip.innerHTML = '<span class="loader"></span>';
-
-
+    this.tooltip.appendChild(this.tooltipFit)
+    this.tooltip.appendChild(this.tooltipAtt)
+    
+    
     // hidde tooltip on mouseout
     parentEl.addEventListener('mouseout', () => {
       lastTooltip = null;
@@ -121,7 +175,7 @@ class FitTooltip {
     // add to the DOM
     parentEl.insertAdjacentElement('afterbegin', this.tooltip);
 
-    fitPromise.then( fit => this.showFit(fit) )
+    fitPromise.then( ({ fit, attackers }) => this.showData(fit, attackers) )
 
     return fitPromise;
   }
