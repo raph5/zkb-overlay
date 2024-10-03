@@ -1,0 +1,52 @@
+
+.zkbo-bind {
+  position: relative !important;
+  display: inline-block;
+}
+
+.zkbo-preview {
+  --background: #0f1213;
+  --border: #343638;
+
+  position: absolute;
+  z-index: 10000;
+  top: 0;
+  left: calc(100% + 8px);
+  display: flex;
+  gap: 8px;
+}
+.zkbo-preview li, .zkbo-preview ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.zkbo-preview img {
+  width: 32px;
+  height: 32px;
+}
+
+.zkbo-box {
+  background: var(--background);
+  border: solid 1px var(--border);
+  padding: 8px !important;
+  box-shadow: 0 0 12px #0008;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 6px;
+}
+
+.zkbo-fit {
+  display: flex;
+}
+.zkbo-fit li {
+  display: flex;
+  flex-direction: column;
+}
+
+.zkbo-attacker {
+  display: flex;
+}
+.zkbo-attacker li {
+  display: flex;
+  flex-direction: column;
+}
