@@ -1,4 +1,10 @@
 
+@keyframes zkbo-load {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .zkbo-bind {
   position: relative !important;
   display: inline-block;
@@ -7,13 +13,15 @@
 .zkbo-preview {
   --background: #0f1213;
   --border: #343638;
+  --color: #c8c9ca;
 
   position: absolute;
   z-index: 10000;
   top: 0;
-  left: calc(100% + 8px);
+  left: calc(100%);
   display: flex;
-  gap: 8px;
+  padding-left: 8px;
+  gap: 4px;
 }
 .zkbo-preview li, .zkbo-preview ul {
   list-style: none;
@@ -49,4 +57,17 @@
 .zkbo-attacker li {
   display: flex;
   flex-direction: column;
+}
+
+.zkbo-loader::after {
+  content: '';
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: block;
+  border-top: solid var(--color) 2px;
+  animation: zkbo-load;
+  animation-iteration-count: infinite;
+  animation-duration: 700ms;
+  animation-timing-function: linear;
 }

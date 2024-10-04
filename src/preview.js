@@ -107,6 +107,5 @@ function buildPreviewContent(kill) {
 function buildPreviewLoader() {
   const loader = document.createElement("div")
   loader.className = "zkbo-box zkbo-loader"
-  loader.innerText = "loading..."
   return loader
 }
