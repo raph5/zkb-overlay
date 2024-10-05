@@ -3,7 +3,7 @@
 
 A zKillboard Overlay designed for Wormhole intel
 
-![features](https://i.imgur.com/VYkfzNl.png)
+![features](https://i.imgur.com/vxfie2Y.png)
 
 ## Install
 
