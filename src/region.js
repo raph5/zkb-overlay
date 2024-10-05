@@ -1,6 +1,6 @@
 
 /*
- * None kspace names by region
+ * Non kspace names by region
  */
 export const regionToClass = new Map()
 regionToClass.set(11000031, "C12")
