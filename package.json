@@ -1,6 +1,6 @@
 {
   "name": "zkb-overlay",
-  "version": "1.0",
+  "version": "2.0",
   "description": "A zKillboard Overlay designed for Wormhole intel",
   "scripts": {
     "build": "webpack",

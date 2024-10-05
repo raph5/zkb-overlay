@@ -5,7 +5,6 @@ module.exports = {
   mode: "production",
   entry: {
     "content.js": "./src/content.js",
-    "background.js": "./src/background.js",
   },
   output: {
     filename: "[name]",
