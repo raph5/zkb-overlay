@@ -3,7 +3,7 @@
   "version": "2.0",
   "description": "A zKillboard Overlay designed for Wormhole intel",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -o ./zkb-overlay && zip -r zkb-overlay.zip zkb-overlay && rm -r ./zkb-overlay",
     "dev": "webpack --watch"
   },
   "author": "raph_5#0989",

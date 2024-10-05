@@ -8,5 +8,5 @@
     "matches": ["https://*.zkillboard.com/*"],
     "css": ["style.css"],
     "js": ["content.js"]
-  }],
+  }]
 }
