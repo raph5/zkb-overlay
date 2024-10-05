@@ -3,18 +3,13 @@
 
 A zKillboard Overlay designed for Wormhole intel
 
-## Instalation
+![features](https://i.imgur.com/VYkfzNl.png)
 
-1. download a zip file with the extension
-2. extract the contents of the zip file
-3. open the extension page in google chrome
-4. activate developer mode
-5. load unpacked extension
+## Install
 
-## Features
+1. Download and extract [zkb-overlay.zip](https://github.com/raph5/zkb-overlay/releases/download/v2.0/zkb-overlay.zip)
+2. Open chrome extensions panel (available at _chrome://extensions_)
+3. Enable developer mode (in top right corner of the screen)
+4. Click "Load unpacked" and select the folder where you unpacked the zip
 
-### kill fitting tooltip
-![alt text](https://i.imgur.com/gxVr7zR.png)
-
-### wormhole class display
-![alt text](https://i.imgur.com/2AzfQWU.png)
+The extension is now installed.
