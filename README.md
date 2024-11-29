@@ -3,7 +3,7 @@
 
 A zKillboard Overlay designed for Wormhole intel
 
-![features](https://raw.githubusercontent.com/raph5/zkb-overlay/refs/heads/master/image/thumbnail.png)
+![features](https://raw.githubusercontent.com/raph5/zkb-overlay/refs/heads/master/images/thumbnail.png)
 
 ## Install
 
